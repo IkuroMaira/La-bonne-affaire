@@ -13,7 +13,7 @@ class AnnonceController extends AbstractController
     public function index(ProductRepository $productRepository): Response
     {
         $products = $productRepository->findAll();
-        // dd($product);
+//        dd($products);
 
         return $this->render('pages/annonces/list_products.html.twig', [
             'products' => $products,

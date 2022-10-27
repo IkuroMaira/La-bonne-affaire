@@ -3,5 +3,7 @@
 {% block title %}Annonces{% endblock %}
 
 {% block body %}
-    LES ANNONCES
+    {% block card %}
+        {% include 'components/_card_annonce.html.twig' %}
+    {% endblock %}
 {% endblock %}
