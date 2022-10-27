@@ -32,8 +32,9 @@ class User
     #[ORM\Column(length: 55, nullable: true)]
     private ?string $pseudo = null;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private array $Roles = [];
+    #[ORM\Column]
+    #[Assert\NotNull]
+    private array $roles = [];
 
     #[ORM\Column(nullable: true)]
     private ?bool $isVoted = null;
@@ -49,6 +50,11 @@ class User
 
     #[ORM\Column(nullable: true)]
     private array $profilePicture = [];
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -129,12 +135,12 @@ class User
 
     public function getRoles(): array
     {
-        return $this->Roles;
+        return $this->roles;
     }
 
-    public function setRoles(?array $Roles): self
+    public function setRoles(?array $roles): self
     {
-        $this->Roles = $Roles;
+        $this->roles = $roles;
 
         return $this;
     }

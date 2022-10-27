@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Product;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -23,13 +24,34 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        for ($i=1; $i < 25; $i++) {
+        /**
+         * Products
+         */
+        for ($i = 1; $i < 25; $i++) {
             $product = new Product();
-            $product-> setTitle($this->faker->sentence(3))
+            $product ->setTitle($this->faker->sentence(3))
                 ->setDescription($this->faker->paragraph())
                 ->setPrice($this->faker->numberBetween(0, 100));
 
             $manager->persist($product);
+        }
+
+        /**
+         * Users
+         */
+        for ($j = 1; $j < 25; $j++) {
+            $user = new User();
+            $user ->setFirstname($this->faker->firstName())
+                ->setLastname($this->faker->lastName())
+                ->setEmail($this->faker->email())
+                ->setPassword('password')
+                ->setPlainPassword('password')
+                ->setPseudo($this->faker->words(1, true))
+                ->setRoles(['ROLE_USER'])
+                ->setPhoneNumber($this->faker->phoneNumber())
+                ->setAddress($this->faker->address());
+
+            $manager->persist($user);
         }
 
         $manager->flush();
