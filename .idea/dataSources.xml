@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="MariaDB Docker" uuid="08ef4cfb-bcea-43d3-a96c-c715fd234186">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <remarks>mysql://root:!lba@htclba.j-erba.fr:3306/symfony_db?serverVersion=mariadb-10.8.2</remarks>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://htclba.j-erba.fr:3306/symfony_db?serverVersion=mariadb-10.8.2</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>
