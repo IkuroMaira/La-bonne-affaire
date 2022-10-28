@@ -4,6 +4,12 @@
 
 {% block body %}
     {% block card %}
-        {% include 'components/_card_annonce.html.twig' %}
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% for product in products %}
+            {% include 'components/_card_annonce.html.twig' with {product: product} only %}
+        {% endfor %}
+    </div>
+</div>
     {% endblock %}
 {% endblock %}
