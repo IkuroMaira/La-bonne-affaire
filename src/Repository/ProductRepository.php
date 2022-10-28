@@ -39,6 +39,26 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    public function findSoldedProducts(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.isSold LIKE :isSold')
+            ->setParameter('isSold', true)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findNotSoldedProducts(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.isSold LIKE :isSold')
+            ->setParameter('isSold', false)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

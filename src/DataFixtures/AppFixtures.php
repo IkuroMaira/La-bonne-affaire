@@ -31,7 +31,8 @@ class AppFixtures extends Fixture
             $product = new Product();
             $product ->setTitle($this->faker->sentence(3))
                 ->setDescription($this->faker->paragraph())
-                ->setPrice($this->faker->numberBetween(0, 100));
+                ->setPrice($this->faker->numberBetween(0, 100))
+                ->setIsSold(mt_rand(0,1) == 1 ? true : false);
 
             $manager->persist($product);
         }

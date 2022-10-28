@@ -12,7 +12,7 @@ class AnnonceController extends AbstractController
     #[Route('/annonces', name: 'app_list_annonces')]
     public function index(ProductRepository $productRepository): Response
     {
-        $products = $productRepository->findAll();
+        $products = $productRepository->findNotSoldedProducts();
 //        dd($products);
 
         return $this->render('pages/annonces/list_products.html.twig', [
