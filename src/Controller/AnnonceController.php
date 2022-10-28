@@ -2,32 +2,82 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
+use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/annonces')]
 class AnnonceController extends AbstractController
 {
-    #[Route('/annonces', name: 'app_list_annonces')]
+    #[Route('/', name: 'app_list_annonces', methods: ['GET'])]
     public function index(ProductRepository $productRepository): Response
     {
         $products = $productRepository->findNotSoldedProducts();
-//        dd($products);
 
         return $this->render('pages/annonces/list_products.html.twig', [
             'products' => $products,
         ]);
     }
 
-    #[Route('/annonce/{id}', name: 'app_show_product')]
-    public function showProduct(int $id, ProductRepository $productRepository): Response
+    #[Route('/new', name: 'app_annonce_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, ProductRepository $productRepository): Response
+    {
+        $product = new Product();
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $productRepository->save($product, true);
+
+            return $this->redirectToRoute('app_annonce_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('annonce/new.html.twig', [
+            'product' => $product,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_show_product', methods: ['GET'])]
+    public function show(int $id, ProductRepository $productRepository): Response
+
     {
         $product = $productRepository->find($id);
-        // dd($product);
 
         return $this->render('pages/annonces/show_product.html.twig', [
             'product' => $product,
         ]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_annonce_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Product $product, ProductRepository $productRepository): Response
+    {
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $productRepository->save($product, true);
+
+            return $this->redirectToRoute('app_show_product', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('pages/annonces/edit_product.html.twig', [
+            'product' => $product,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_annonce_delete', methods: ['POST'])]
+    public function delete(Request $request, Product $product, ProductRepository $productRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
+            $productRepository->remove($product, true);
+        }
+
+        return $this->redirectToRoute('app_annonce_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Comment;
 use App\Entity\Product;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -53,6 +54,14 @@ class AppFixtures extends Fixture
                 ->setAddress($this->faker->address());
 
             $manager->persist($user);
+        }
+
+        for($k = 0; $k < 25; $k++) {
+            $comment = new Comment();
+            $comment ->setContent($this->faker->sentence())
+                ->setAuthorID($this->faker->numberBetween(0, 25));
+
+            $manager->persist($comment);
         }
 
         $manager->flush();
