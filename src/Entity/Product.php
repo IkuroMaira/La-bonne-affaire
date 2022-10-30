@@ -22,7 +22,7 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(type: 'string',length: 155, unique: true)]
-    #[Assert\length(min: 10, max: 155)]
+    #[Assert\Length(min: 10, max: 155)]
     #[Assert\NotBlank]
     private ?string $title = null;
 
@@ -36,10 +36,11 @@ class Product
 
     #[ORM\Column]
     #[Assert\NotNull]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $createdAt;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
+    #[Assert\NotNull]
+    private ?\DateTimeImmutable $updatedAt;
 
     #[ORM\Column(nullable: true)]
     private ?int $authorID = null;
