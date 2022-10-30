@@ -6,27 +6,36 @@ use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('title', message: 'Cette annonce existe déjà.')]
 class Product
 {
+    // Pour mettre en place plus tard la possibilité de gérer des annonces en brouillon
+//    const STATUS = ['DRAFT_STATUS', 'PUBLISHED_STATUS'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 155)]
+    #[ORM\Column(type: 'string',length: 155, unique: true)]
+    #[Assert\length(min: 10, max: 155)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
+    #[Assert\NotBlank]
     private ?float $price = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -50,6 +59,9 @@ class Product
     #[ORM\Column(length: 55, nullable: true)]
     private ?string $category = null;
 
+//    #[ORM\Column(type: 'string', length: 55)]
+//    private string $status = Product::STATUS[0];
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -58,7 +70,6 @@ class Product
     #[ORM\PreUpdate]
     public function preUpdate()
     {
-
         $this->updatedAt = new \DateTimeImmutable();
     }
 
@@ -77,6 +88,11 @@ class Product
         $this->title = $title;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->title;
     }
 
     public function getDescription(): ?string
@@ -199,8 +215,15 @@ class Product
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->title;
-    }
+//    public function getStatus(): ?string
+//    {
+//        return $this->status;
+//    }
+//
+//    public function setStatus(string $status): self
+//    {
+//        $this->status = $status;
+//
+//        return $this;
+//    }
 }

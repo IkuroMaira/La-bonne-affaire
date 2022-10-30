@@ -3,11 +3,11 @@
 {% block title %}Modifier l'annonce{% endblock %}
 
 {% block body %}
-    <h1>Edit Product</h1>
+    <h1>Modifier votre annonce</h1>
 
-    {{ include('annonce/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('components/_form_annonce.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_show_product', {id: product.id}) }}">back to list</a>
+    <a href="{{ path('app_show_product', {id: product.id}) }}">Retour à l'annonce</a>
 
     {{ include('annonce/_delete_form.html.twig') }}
 {% endblock %}

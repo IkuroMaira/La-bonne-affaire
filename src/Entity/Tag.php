@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\TagRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
+#[UniqueEntity('name', message: 'Cette catégorie existe déjà.')]
 class Tag
 {
     #[ORM\Id]
@@ -14,9 +17,12 @@ class Tag
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\LessThan(255)]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
     private ?\DateTimeImmutable $createdAt = null;
 
     public function getId(): ?int

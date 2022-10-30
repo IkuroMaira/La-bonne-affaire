@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity('email', message: 'Ce compte existe déjà.')]
 class User
 {
     #[ORM\Id]
@@ -15,18 +17,26 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 55)]
+    #[Assert\length(min: 2, max: 55)]
+    #[Assert\NotBlank]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 55)]
+    #[Assert\length(min: 2, max: 55)]
+    #[Assert\NotBlank]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 155)]
+    #[Assert\NotBlank]
+    #[Assert\LessThan(155)]
     private ?string $email = null;
 
     #[ORM\Column(length: 55)]
+    #[Assert\NotBlank]
     private ?string $password = null;
 
     #[ORM\Column(length: 55, nullable: true)]
+    #[Assert\NotBlank]
     private ?string $plainPassword = null;
 
     #[ORM\Column(length: 55, nullable: true)]
@@ -46,6 +56,7 @@ class User
     private ?string $address = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
